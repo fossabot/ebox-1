@@ -23,8 +23,12 @@ mod test_utils {
     #[test]
     fn test_str_to_absolute_path() {
         let path_name = "./";
-        let abs = utils::str_to_absolute_path(path_name);
-        assert_eq!(abs.ok().unwrap().is_absolute(), true);
+        let abs = utils::str_to_absolute_path(path_name).unwrap();
+        assert_eq!(abs.is_absolute(), true);
+
+        let new_abs = utils::str_to_absolute_path(abs.to_str().unwrap());
+
+        assert_eq!(new_abs.unwrap().is_absolute(), true);
     }
 
     #[test]
@@ -43,11 +47,7 @@ mod test_utils {
     fn test_dir_contents() {
         let contents = utils::dir_contents("./");
 
-        if contents.is_err() {
-            panic!("{:?}", contents.err());
-        }
-
-        assert!(contents.ok().unwrap().len() >= 1);
+        assert!(contents.unwrap().len() >= 1);
     }
 
     #[test]
