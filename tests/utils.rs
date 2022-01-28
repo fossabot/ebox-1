@@ -16,7 +16,7 @@
 
 #[cfg(test)]
 mod test_utils {
-    use std::path::PathBuf;
+    use std::{env::temp_dir, path::PathBuf};
 
     use ebox::utils;
 
@@ -54,5 +54,30 @@ mod test_utils {
     fn test_file_exist() {
         let target = PathBuf::from("./Cargo.toml");
         assert_eq!(utils::file_exist(&target).unwrap(), true);
+    }
+
+    #[test]
+    fn test_file_read() {
+        let target = PathBuf::from("./Cargo.toml");
+        assert_eq!(
+            utils::file_read(&target).unwrap().contains("dependencies"),
+            true
+        );
+
+        let fail_path = PathBuf::from("./test.rs");
+
+        if utils::file_read(&fail_path).is_ok() {
+            panic!("it should be fail.");
+        }
+    }
+
+    #[test]
+    fn test_file_new() {
+        let mut target = temp_dir();
+        target.push("test.txt");
+
+        let write = utils::file_new(&target, "test");
+        assert_eq!(write.is_err(), false);
+        assert_eq!(utils::file_read(&target).unwrap(), "test");
     }
 }
