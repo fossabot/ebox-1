@@ -14,11 +14,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-use std::{
-    fs,
-    io::{Error, ErrorKind},
-    path::PathBuf,
-};
+use std::{fs, io::Error, path::PathBuf};
 
 /// function for getting absolute path from string.
 pub fn str_to_absolute_path(target: &str) -> Result<PathBuf, Error> {
@@ -67,9 +63,6 @@ pub fn file_exist(target: &PathBuf) -> Result<bool, Error> {
 /// function for read a file.
 pub fn file_read(target: &PathBuf) -> Result<String, Error> {
     let abs = path_to_absolute_path(target)?;
-    if !file_exist(target)? {
-        return Err(ErrorKind::NotFound.into());
-    }
     fs::read_to_string(abs)
 }
 
