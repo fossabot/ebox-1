@@ -66,9 +66,7 @@ mod test_utils {
 
         let fail_path = PathBuf::from("./test.rs");
 
-        if utils::file_read(&fail_path).is_ok() {
-            panic!("it should be fail.");
-        }
+        assert_eq!(utils::file_read(&fail_path).is_ok(), false);
     }
 
     #[test]
